@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from config import get_file_paths
+from config import DATA_DIR, OUTPUT_DIR, get_file_paths
 from data_loader import load_and_preprocess_sales
 from menu import MENU
 from categorize import assign_and_correct_categories
@@ -21,6 +21,9 @@ from constants import COL_CATEGORY
 
 
 def main() -> None:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    print(f"Output folder: {OUTPUT_DIR.resolve()}\n")
+
     parser = argparse.ArgumentParser(description="BDM Sales analysis pipeline")
     parser.add_argument("--no-report", action="store_true", help="Skip generating the DOCX summary report")
     parser.add_argument("--no-plots", action="store_true", help="Skip generating plots")
@@ -29,7 +32,8 @@ def main() -> None:
 
     file_paths = get_file_paths()
     if not file_paths:
-        print("No Excel files found in data directory. Add files (e.g. Jan_2023.xlsx) and try again.")
+        print(f"No Excel files found. Looked in: {DATA_DIR.resolve()}")
+        print("Add files (e.g. Jan_2023.xlsx) there, or edit DATA_DIR in config.py if they are elsewhere.")
         sys.exit(1)
 
     print("Loading and preprocessing sales data...")
@@ -59,11 +63,15 @@ def main() -> None:
 
     if not args.no_report:
         path = save_summary_docx(summary)
-        print(f"\nReport saved: {path}")
+        print(f"\nReport saved: {path.resolve()}")
 
     if not args.no_plots:
         run_all_visualizations(df)
 
+    if list(OUTPUT_DIR.iterdir()):
+        print("\nOutput files:")
+        for f in sorted(OUTPUT_DIR.iterdir()):
+            print(f"  {f.name}")
     print("\nDone.")
 
 
