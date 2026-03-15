@@ -1,0 +1,11 @@
+COL_ITEM = "Item"
+COL_SUB_CATEGORY = "Sub Category"
+COL_CATEGORY = "Category"
+COL_YEAR = "Year"
+COL_MONTH = "Month"
+COL_TOTAL = "Total (₹)"
+COL_QTY = "Qty."
+SUB_TOTAL_LABEL = "sub total"
+UNKNOWN_CATEGORY = "Unknown"
+
+REQUIRED_COLUMNS_FOR_ANALYSIS = [COL_CATEGORY, COL_TOTAL, COL_QTY, COL_YEAR]
